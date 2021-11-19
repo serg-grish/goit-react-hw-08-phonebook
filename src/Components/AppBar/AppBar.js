@@ -5,7 +5,7 @@ import Navigation from "component/Navigation";
 import UserMenu from "component/UserMenu";
 import { authSelectors } from "redux/auth";
 
-const style = {
+const styles = {
     header: {
         display: 'flex',
         justifuContent: 'space-between',
@@ -17,9 +17,9 @@ const style = {
 export default function AppBar() {
     const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
     return (
-        <nav style={style.header}>
+        <nav style={styles.header}>
             <Navigation />
-            {isLoggerIn ? <UserMenu /> : <AuthNav />}
+            {isLoggedIn ? <UserMenu /> : <AuthNav />}
         </nav>
     );
 }
