@@ -1,26 +1,24 @@
-import { filterContacts } from "../../redux/contacts/contactsActions";
+import { contactSelectors, changeFilter } from "redux/contact";
 import { useDispatch, useSelector } from "react-redux";
-import s from './Filter.module.css';
-import shortid from "shortid";
+import styles from './Filter.module.css';
 
-export default function Filter() {
-    const filter = useSelector(state => state.filter);
+
+const Filter = () => {
+    const value = useSelector(contactSelectors.getFilter);
     const dispatch = useDispatch();
-    const filteredID = shortid.generate();
     return (
-        <>
-            <label htmlFor={filteredID} className={s.filterLabel}>
+            <label className={styles.label}>
             <h3>Find contacts by name</h3>
-                <input type="text"
-                    id={filteredID}
-                    value={filter}
-                    onChange={e => dispatch(filterContacts(e.target.value))}
-                    className={s.filterInput}
-                
+                <input 
+                    type="text"
+                    value={value}
+                    onChange={e => dispatch(changeFilter(e.target.value))}
+                    className={styles.input}
+                    placeholder="Find your contact"
+        autoComplete="off"
                 />
-            
             </label>
-        </>
     );
 };
 
+export default Filter;
