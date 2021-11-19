@@ -1,49 +1,34 @@
-import { addContacts } from '../../redux/contacts/contactsOperations';
-import { getContacts } from '../../redux/contacts/contactsSelectors';
+import { contacstOperations, contactsSelectors } from "redux/contacts";
 import { useDispatch, useSelector } from 'react-redux';
 import s from './Contacts.module.css';
 import { useState } from 'react';
+import PropTypes from "prop-types"
 
-
-export default function InputForm() {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const contacts = useSelector(state => getContacts(state));
+  const contacts = useSelector(contactsSelectors.getContacts);
 
-  const handleChange = e => {
-    const { name, value } = e.currentTarget;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
+  const handleChangeName = e => {
+    setStateName(e.target.value)
+    };
+  const handleChangeNunber = e => {
+    setStateNumber(e.target.value);
+    };
 
   const handleSubmit = e => {
     e.preventDefault();
-   
-      if (contacts.map(contact => contact.name).includes(name)) {
-      alert(`Sorry,  ${name} is already in contacs.`);
-      return;
-    }
-   
-  
-   const addContactOnSubmit = {
-     name,
-     number,
-   }
-   dispatch(addContacts(addContactOnSubmit));
-    setName('');
-    setNumber('');
+    if (contacts.map(contact => contact.name.toLowerCase() === stateName.toLowerCase(),
+    )
+  ) {
+    return alert(`Sorry,${stateName} is alredy in contacts`);
+  }
 
-  };
+  dispatch
+
+  
 
   return (
     <div className={s.form}>
@@ -78,6 +63,8 @@ export default function InputForm() {
       </form>
     </div>
   )
-}
+};
+
+  export default ContactForm;
 
 
