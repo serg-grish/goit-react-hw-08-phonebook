@@ -5,8 +5,8 @@ import { useState } from 'react';
 import PropTypes from "prop-types"
 
 function ContactForm() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [stateName, setStateName] = useState('');
+  const [stateNumber, setStateNumber] = useState('');
 
   const dispatch = useDispatch();
   const contacts = useSelector(contactsSelectors.getContacts);
@@ -21,49 +21,57 @@ function ContactForm() {
   const handleSubmit = e => {
     e.preventDefault();
     if (contacts.map(contact => contact.name.toLowerCase() === stateName.toLowerCase(),
-    )
-  ) {
-    return alert(`Sorry,${stateName} is alredy in contacts`);
-  }
+      )
+    ) {
+      return alert(`Sorry,${stateName} is alredy in contacts`);
+    }
 
-  dispatch
-
+  dispatch(contacstOperations.addContact(stateName, stateNumber));
+  setStateName('');
+  setStateNumber('');
+  };
   
 
+
   return (
-    <div className={s.form}>
-      <form onSubmit={handleSubmit} >
+      <form className={s.form} onSubmit={handleSubmit} >
         <label className={s.label} >
           Name
-          <input className={s.input}
+          <input 
+            className={s.input}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             required
-            value={name}
-            onChange={handleChange}
+            value={stateName}
+            onChange={handleChangeName}
           />
         </label>
         <label className={s.label} >
           Number
-          <input className={s.input}
+          <input 
+            className={s.input}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
             required
-            value={number}
-            onChange={handleChange}
+            value={stateNumber}
+            onChange={handleChangeNunber}
           />
         </label>
-        <button className={s.button} type="submit">
-          <span className={s.btnText}>Add contact</span>
+        <button className={s.btn} type="submit">
+          Add contact
           </button>
       </form>
-    </div>
-  )
-};
+  );
+}
+
+  ContactForm.protoTypes = {
+  stateName: PropTypes.string.isRequired,
+  stateNumber: PropTypes.string.isRequired,
+  }
 
   export default ContactForm;
 
