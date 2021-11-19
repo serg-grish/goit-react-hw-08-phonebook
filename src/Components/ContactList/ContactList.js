@@ -3,30 +3,34 @@ import { useSelector, useDispatch } from 'react-redux';
 import s from "./ContactList.module.css";
 import { useEffect } from 'react';
 
-const ContactList() {
-    const contacts = useSelector(getVisibleContact);
+const ContactList = () => {
+    const contacts = useSelector(contactSelectors.getFilteredContacts);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchContacts());
+        dispatch(contactOperations.fetchContacts());
     }, [dispatch]);
 
+    const onDeleteContacts = id => dispatch(contactOperations.DeleteContact(id));
+
     return (
-        <ul className={s.list}> {
-            contacts.map(({ id, name, number }) => (
-                <ContactItem
-                    key={id}
-                    id={id}
-                    name={name}
-                    number={number}
-          
-                />
-            ))
-        }
-       
-            </ul> 
+        <ul className={s.list}> 
+        {contacts.map(({ id, name, number }) => {
+            return (
+                <li className={s.list__item} key={id}>
+                    {name} ; {number}
+                    <button
+                    type="button"
+                    className={s.btn}
+                    onClick={() => onDeleteContacts(id)}
+                    >
+                        Delete
+                    </button>
+                </li>
+            );
+          })}
+        </ul>
     );
 };
-ContactList.propTypes = {
-    contacts: PropTypes.array,
-}
+
+export default ContactList;
