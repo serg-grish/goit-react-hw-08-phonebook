@@ -1,56 +1,54 @@
-import { ContactList } from './Components/ContactList';
-import InputForm from './Components/ContactForm';
-import Filter from './Components/Filter';
-import s from './app.scss';
+import styles from './app.scss';
 
 import React, { useEffect, Suspense, lazy } from 'react';
-import { Switch } from 'react-router';
-import { useDispatch, useSelectors } from 'react-redux';
-import { authOperations, authSelectors } from 'redux/auth';
+import { Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import authOperations from './redux/auth/auth-operations';
+import authSelectors from './redux/auth/auth-selectors';
+import Container from './Components/Container/Container';
+import AppBar from './Components/AppBar/AppBar';
+import ContactForm from './Components/ContactForm/ContactForm';
+import Filter from './Components/Filter/Filter';
+import ContactList from './Components/ContactList/ContactList';
+import PrivateRoute from './Components/Route/PrivateRoute';
+import PublicRoute from './Components/Route/PublicRoute';
 
-import Container from 'react-dom';
-import AppBar from './components/AppBar/AppBar';
-import PrivateRoute from 'components/PrivateRoute';
-import PublicRoute from 'components/PublicRoute';
-
-const HomeView = lazy(() => import('./views/HomeView'));
-const RegisterView = lazy(() => import('./views/RegisterView'));
-const LoginView = lazy(() => import('./views/LoginView'));
+const HomeView = lazy(() => import('./view/HomeView/HomeView.js'));
+const RegisterView = lazy(() => import('./view/RegisterView/RegisterView.js'));
+const LoginView = lazy(() => import('./view/LoginView/LoginView.js'));
 
 export default function App() {
   const dispatch = useDispatch();
-  const isFetchingCurrentUser = useSelectors(authSelectors.isFetchingCurrent);
+  const isFetchingCurrentUser = useSelector(authSelectors.getIsFetchingCurrent);
 
   useEffect(() => {
     dispatch(authOperations.fetchCurrentUser());
   }, [dispatch]);
-  
   return (
     !isFetchingCurrentUser && (
       <Container>
         <AppBar />
         <Switch>
-          <Suspense fallback={<p>LOADING...</p>}>
+          <Suspense fallback={<p>Loading...</p>}>
             <PublicRoute path="/" exact>
               <HomeView />
-            </PublicRoute> 
+            </PublicRoute>
 
             <PublicRoute path="/register" restricted>
               <RegisterView />
-            </PublicRoute> 
+            </PublicRoute>
 
             <PublicRoute path="/login" redirectTo="/contacts" restricted>
               <LoginView />
             </PublicRoute>
 
             <PrivateRoute path="/contacts" redirectTo="/login">
-              <h1 className={s.tittle__phonebook}>Phonebook</h1>
-              <InputForm />
-              <h2 className={s.tittle__contacts}>Contacts</h2>
+              <h1 className={styles.title__phonebook}>Phonebook</h1>
+              <ContactForm />
+              <h2 className={styles.title__contacts}>Contacts</h2>
               <Filter />
               <ContactList />
             </PrivateRoute>
-
           </Suspense>
         </Switch>
       </Container>

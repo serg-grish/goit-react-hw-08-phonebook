@@ -1,4 +1,5 @@
-import { contactSelectors, changeFilter } from "redux/contact";
+import { contactSelectors } from "../../redux/contacts/contact-selectors";
+import { changeFilter } from "../../redux/contacts/contacts-actions";
 import { useDispatch, useSelector } from "react-redux";
 import styles from './Filter.module.css';
 

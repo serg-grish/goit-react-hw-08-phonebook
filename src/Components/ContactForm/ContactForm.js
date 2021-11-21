@@ -1,4 +1,5 @@
-import { contacstOperations, contactsSelectors } from "redux/contacts";
+import { contacstOperations } from "../../redux/contacts/contact-operations";
+import { contactsSelectors } from "../../redux/contacts/contact-selectors";
 import { useDispatch, useSelector } from 'react-redux';
 import s from './Contacts.module.css';
 import { useState } from 'react';
